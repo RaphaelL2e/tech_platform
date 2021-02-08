@@ -95,8 +95,8 @@ paths:
           description: "success"
           schema:
             $ref: "#/definitions/GetUserInfoResponse"
-  /admin/getUsers/{limit}/{size}:
-    get:
+  /admin/getUsers:
+    post:
       tags:
         - "管理员模块"
       summary: "分页获取用户列表"
@@ -111,12 +111,17 @@ paths:
               token:
                 type: string
                 description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "分页参数"
+          schema:
+            $ref: "#/definitions/GetUsersModel"
       responses:
         200:
           description: "success"
           schema:
             $ref: "#/definitions/GetUsersResponse"
-        401：
         401:
           description: "token invalid"
   /admin/updateUserStatus:
@@ -150,6 +155,38 @@ paths:
                 type: integer
                 description: "0 封禁 1 正常"
                 default: 0
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/UpdateUserStatusResponse"
+  /admin/getTechnologys/:
+    post:
+      tags:
+        - "管理员模块"
+      summary: "分页获取科技列表"
+      description: "后台分页获取全部科技模块"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "分页参数"
+          schema:
+            $ref: "#/definitions/GetTechnologiesModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/GetTechnologiesResponse"
 definitions:
   RegisterModel:
     type: object
@@ -244,6 +281,57 @@ definitions:
       updateAt:
         type: string
         description: "更新时间"
+  GetUsersModel:
+    type: object
+    properties:
+      limit:
+        type: integer
+        description: "分页容量"
+      offset:
+        type: integer
+        description: "偏置量"
+  GetTechnologiesModel:
+    type: object
+    properties:
+      limit:
+        type: integer
+        description: "分页容量"
+      offset:
+        type: integer
+        description: "偏置量"
+      userId:
+        type: string
+        description: "可选,查询某账号发布的科技时"
+  TechnologyModel:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: "科技ID"
+      name:
+        type: string
+        description: "科技名称"
+      summary:
+        type: string
+        description: "科技简介"
+      image:
+        type: object
+        description: "封面url"
+      imageType:
+        type: integer
+        description: "封面类型 0 无封面 1 单封面 "
+      context:
+        type: string
+        description: "科技内容"
+      userId:
+        type: string
+        description: "发布者ID"
+      createAt:
+        type: string
+        description: "创建时间"
+      updateAt:
+        type: string
+        description: "更新时间"
   RegisterResponse:
     type: object
     properties:
@@ -331,3 +419,33 @@ definitions:
             properties:
               0:
                 $ref: "#/definitions/AdminUserInfoModel"
+  UpdateUserStatusResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+  GetTechnologiesResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          technologyList:
+            type: object
+            properties:
+             0:
+              $ref: "#/definitions/TechnologyModel"
