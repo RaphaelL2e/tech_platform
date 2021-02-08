@@ -1,0 +1,333 @@
+swagger: "2.0"
+info:
+  description: "科技平台API说明"
+  version: "1.0.0"
+  title: "Technology Platform API Spec"
+host: "technologyplatform.liyafei.top"
+basePath: "/api/v1"
+tags:
+  - name: "用户模块"
+  - name: "管理员模块"
+  - name: "科技模块"
+  - name: "文章模块"
+schemes:
+  - "http"
+paths:
+  /user/register:
+    post:
+      tags:
+        - "用户模块"
+      summary: "用户注册"
+      description: "提供给用户注册账号"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "注册参数"
+          required: true
+          schema:
+            $ref: "#/definitions/RegisterModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/RegisterResponse"
+  /user/login:
+    post:
+      tags:
+        - "用户模块"
+      summary: "用户登陆"
+      description: "提供给用户登陆,成功返回token"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "登陆参数"
+          required: true
+          schema:
+            $ref: "#/definitions/LoginModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+  /user/addOrUpdateInfo:
+    post:
+      tags:
+        - "用户模块"
+      summary: "添加/更新用户信息"
+      description: "根据用户ID添加或更新用户信息"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: "body"
+          name: "body"
+          description: "用户信息参数"
+          required: false
+          schema:
+            $ref: "#/definitions/AddOrUpdateUserInfoModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/AddOrUpdateUserInfoResponse"
+        401:
+          description: "token invalid"
+  /user/getUserInfo/{userId}:
+    get:
+      tags:
+        - "用户模块"
+      summary: "获得单个用户信息"
+      description: "根据用户ID拿到某个用户的非敏感信息(头像、昵称、简介等)"
+      parameters:
+        - in: path
+          name: "userId"
+          description: "用户ID"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/GetUserInfoResponse"
+  /admin/getUsers/{limit}/{size}:
+    get:
+      tags:
+        - "管理员模块"
+      summary: "分页获取用户列表"
+      description: "后台分页获取全部用户列表"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/GetUsersResponse"
+        401：
+        401:
+          description: "token invalid"
+  /admin/updateUserStatus:
+    post:
+      tags:
+        - "管理员模块"
+      summary: "禁封/解封用户账号"
+      description: "管理员有权限禁封、解封用户账号"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          description: "参数"
+          schema:
+            properties:
+              userId:
+                type: string
+                description: "当前账号ID"
+              targetUserId:
+                type: string
+                description: "目标账号ID"
+              status:
+                type: integer
+                description: "0 封禁 1 正常"
+                default: 0
+definitions:
+  RegisterModel:
+    type: object
+    properties:
+      id:
+        type: "string"
+        description: "用户ID"
+      username:
+        type: "string"
+        description: "用户账号"
+        minLength: 8
+        maxLength: 16
+      password:
+        type: "string"
+        description: "用户密码"
+        minLength: 8
+        maxLength: 16
+      status:
+        type: integer
+        description: "用户状态 1 可用 0 禁封"
+        default: 1
+  LoginModel:
+    type: object
+    properties:
+      username:
+        type: "string"
+        description: "用户账号"
+        minLength: 8
+        maxLength: 16
+      password:
+        type: "string"
+        description: "用户密码"
+        minLength: 8
+        maxLength: 16
+  AddOrUpdateUserInfoModel:
+    type: object
+    properties:
+      userId:
+        type: string
+        description: "用户ID"
+      name:
+        type: string
+        description: "用户昵称"
+      avatar:
+        type: string
+        description: "用户头像"
+      introduce:
+        type: string
+        description: "用户简介"
+  UserInfoModel:
+    type: object
+    properties:
+      user_id:
+        type: string
+        description: "用户ID"
+      name:
+        type: string
+        description: "用户昵称"
+      avatar:
+        type: string
+        description: "用户头像"
+      introduce:
+        type: string
+        description: "用户简介"
+      createAt:
+        type: string
+        description: "创建时间"
+      updateAt:
+        type: string
+        description: "更新时间"
+  AdminUserInfoModel:
+    type: object
+    properties:
+      user_id:
+        type: string
+        description: "用户ID"
+      username:
+        type: string
+        description: "用户名"
+      name:
+        type: string
+        description: "用户昵称"
+      avatar:
+        type: string
+        description: "用户头像"
+      introduce:
+        type: string
+        description: "用户简介"
+      createAt:
+        type: string
+        description: "创建时间"
+      updateAt:
+        type: string
+        description: "更新时间"
+  RegisterResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息"
+        default: "success"
+      data:
+        type: object
+        properties:
+          userId:
+            type: string
+            description: "返回用户ID"
+  LoginResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          token:
+            type: string
+            description: "返回token"
+          userId:
+            type: string
+            description: "返回用户ID"
+  AddOrUpdateUserInfoResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          userInfo:
+            $ref: "#/definitions/UserInfoModel"
+  GetUserInfoResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          userInfo:
+            $ref: "#/definitions/UserInfoModel"
+  GetUsersResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          userList:
+            properties:
+              0:
+                $ref: "#/definitions/AdminUserInfoModel"
