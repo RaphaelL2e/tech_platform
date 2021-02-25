@@ -32,12 +32,17 @@ func Setup(c *cli.Context, helper1 jwtutil.JWTHelper, middlewares ...gin.Handler
 	router.Use(middlewares...)
 	srv = server.NewHandler(helper1)
 
-	g0 := router.Group("/apiv11/user")
+	g0 := router.Group("/api/v1/user")
 	{
 		g0.POST("/register", register)
 		g0.POST("/login", login)
-		g0.Use(middleware.JWTAuth(c.String("jwt-key"))).POST("/updateUserinfo", updateUserInfo)
 		g0.GET("/:userId", getUserinfo)
+	}
+
+	g1 := router.Group("/api/v1/user").
+		Use(middleware.JWTAuth(c.String("jwt-key")))
+	{
+		g1.POST("/updateUserinfo", updateUserInfo)
 	}
 
 	return router
