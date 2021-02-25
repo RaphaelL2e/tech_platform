@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"net/url"
-	"tech_platform/internal/pkg/jwtauth"
-	"tech_platform/internal/user/store"
+	"tech_platform/server/pkg/jwtutil"
+
+	"tech_platform/server/internal/user/store"
+
+	"github.com/urfave/cli/v2"
 )
 
 func setupStore(c *cli.Context) store.Store {
@@ -18,9 +20,12 @@ func setupStore(c *cli.Context) store.Store {
 	return store.New(rdsConfig)
 }
 
-func setupJWTHelper(c *cli.Context) *jwtauth.JWTHelper {
-	return &jwtauth.JWTHelper{Conf: jwtauth.JWTConf{
-		Key:      c.String("jwt-key"),
-		Duration: 24 * 60 * 60, // 1 day
-	}}
+func setupJWTHelper(c *cli.Context) jwtutil.JWTHelper {
+	return jwtutil.JWTHelper{
+		Conf: jwtutil.JWTConf{
+			Key:      c.String("jwt-key"),
+			Duration: c.Int64("jwt-duration"),
+		},
+	}
 }
+

@@ -9,8 +9,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"tech_platform/internal/middleware"
-	"tech_platform/internal/user/router"
+	"tech_platform/server/internal/middleware"
+	"tech_platform/server/internal/user/router"
 	"time"
 )
 
@@ -35,13 +35,25 @@ var flags = []cli.Flag{
 		Usage:   "database name",
 		EnvVars: []string{"DB_NAME"},
 	},
+	&cli.StringFlag{
+		Name:    "jwt-key",
+		Usage:   "jwt-key",
+		EnvVars: []string{"JWT_KEY"},
+		Value:   "this is key",
+	},
+	&cli.Int64Flag{
+		Name:    "jwt-duration",
+		Usage:   "jwt-duration",
+		EnvVars: []string{"JWT_DURATION"},
+		Value:   24 * 60 * 60,
+	},
 }
 
 func server(c *cli.Context) (err error) {
 	store := setupStore(c)
 	jwtHelper := setupJWTHelper(c)
-
 	handler := router.Setup(
+		c,
 		jwtHelper,
 		middleware.Store(store),
 	)

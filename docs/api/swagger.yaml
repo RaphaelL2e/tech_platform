@@ -10,6 +10,7 @@ tags:
   - name: "管理员模块"
   - name: "科技模块"
   - name: "文章模块"
+  - name: "文件模块"
 schemes:
   - "http"
 paths:
@@ -53,8 +54,8 @@ paths:
     post:
       tags:
         - "用户模块"
-      summary: "添加/更新用户信息"
-      description: "根据用户ID添加或更新用户信息"
+      summary: "更新用户信息"
+      description: "根据用户ID更新用户信息"
       parameters:
         - in: header
           name: "token"
@@ -160,7 +161,7 @@ paths:
           description: "success"
           schema:
             $ref: "#/definitions/UpdateUserStatusResponse"
-  /admin/getTechnologys/:
+  /admin/getTechnologys:
     post:
       tags:
         - "管理员模块"
@@ -187,6 +188,217 @@ paths:
           description: "success"
           schema:
             $ref: "#/definitions/GetTechnologiesResponse"
+  /admin/getArticles:
+    post:
+      tags:
+        - "管理员模块"
+      summary: "分页获取文章列表"
+      description: "后台分页获取全部文章"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "分页参数"
+          schema:
+            $ref: "#/definitions/GetArticlesModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/GetTechnologiesResponse"
+  /admin/uploadTechnology:
+    post:
+      tags:
+        - "管理员模块"
+      summary: "发布科技"
+      description: "管理员发布科技"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "上传参数"
+          schema:
+            $ref: "#/definitions/TechnologyModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/UploadTechnologyResponse"
+  /admin/updateTechnology:
+    put:
+      tags:
+        - "管理员模块"
+      summary: "更新科技"
+      description: "管理员更新科技"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "更新参数。ID必传"
+          schema:
+            $ref: "#/definitions/TechnologyModel"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/UploadTechnologyResponse"
+  /admin/deleteTechnology:
+    delete:
+      tags:
+        - "管理员模块"
+      summary: "删除科技"
+      description: "删除已发布科技"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "删除依据科技ID"
+          schema:
+            properties:
+              technologyId:
+                type: string
+                description: "科技ID"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/DeleteTechnologyResponse"
+  /admin/updateArticleStatus:
+    put:
+      tags:
+        - "管理员模块"
+      summary: "审核文章"
+      description: "更新文章状态"
+      parameters:
+        - in: header
+          name: "token"
+          description: "Security token"
+          required: true
+          schema:
+            properties:
+              token:
+                type: string
+                description: "token"
+        - in: body
+          name: "body"
+          required: true
+          description: "更新文章ID"
+          schema:
+            properties:
+              atricleId:
+                type: string
+                description: "要更新的文章的ID"
+              status:
+                type: integer
+                description: "更新文章的状态 0待审核 1 发布 -1 删除"
+      responses:
+        200:
+          description: "success"
+          schema:
+            $ref: "#/definitions/UpdateArticleStatusResponse"
+  /technology/getTechnologys:
+    get:
+      tags:
+        - "科技模块"
+      summary: "分页获取科技"
+      description: "分页获取依据时间排序的科技"
+      parameters:
+        - in: query
+          name: "query"
+          required: true
+          description: "分页获取科技参数(默认依据时间排序)"
+          schema:
+            properties:
+              limit:
+                type: integer
+                description: "分页容量"
+              offest:
+                type: integer
+                description: "分页偏移量"
+      responses:
+        200:
+          description: "success"
+          schema:
+            properties:
+              code:
+                type: integer
+                default: 200
+              message:
+                type: string
+                default: "success"
+              data:
+                properties:
+                  technologys:
+                    type: object
+                    properties:
+                      0:
+                        type: object
+                        $ref: "#/definitions/TechnologyModel"
+  /technology/get:
+    get:
+      tags:
+      - "科技模块"
+      summary: "获取科技详情"
+      description: "更具ID获取科技详情"
+      parameters:
+        - in: body
+          name: "body"
+          required: true
+          description: "获取科技详情参数"
+          schema:
+            properties:
+              id:
+                type: integer
+                description: "科技ID"
+      responses:
+        200:
+          description: "success"
+          schema:
+            properties:
+              code:
+                type: integer
+                default: 200
+              message:
+                type: string
+                default: "success"
+              data:
+                $ref: "#/definitions/TechnologyModel"
 definitions:
   RegisterModel:
     type: object
@@ -224,9 +436,6 @@ definitions:
   AddOrUpdateUserInfoModel:
     type: object
     properties:
-      userId:
-        type: string
-        description: "用户ID"
       name:
         type: string
         description: "用户昵称"
@@ -290,6 +499,9 @@ definitions:
       offset:
         type: integer
         description: "偏置量"
+      status:
+        type: integer
+        description: "账号状态: 1可用 0禁封"
   GetTechnologiesModel:
     type: object
     properties:
@@ -302,6 +514,24 @@ definitions:
       userId:
         type: string
         description: "可选,查询某账号发布的科技时"
+  GetArticlesModel:
+    type: object
+    properties:
+      limit:
+        type: integer
+        description: "分页容量"
+      offset:
+        type: integer
+        description: "偏置量"
+      userId:
+        type: string
+        description: "可选,查询某账号发表的文章时"
+      technologyId:
+        type: integer
+        description: "可选,查询某科技关联的文章时"
+      status:
+        type: integer
+        description: "文章状态 0待审核 1 发布 -1 删除"
   TechnologyModel:
     type: object
     properties:
@@ -326,6 +556,30 @@ definitions:
       userId:
         type: string
         description: "发布者ID"
+      createAt:
+        type: string
+        description: "创建时间"
+      updateAt:
+        type: string
+        description: "更新时间"
+  ArticleModel:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: "文章ID"
+      title:
+        type: string
+        description: "文章标题"
+      context:
+        type: string
+        description: "文章内容"
+      userId:
+        type: string
+        description: "发布者用户ID"
+      status:
+        type: integer
+        description: "文章状态"
       createAt:
         type: string
         description: "创建时间"
@@ -369,6 +623,9 @@ definitions:
           userId:
             type: string
             description: "返回用户ID"
+          status:
+            type: integer
+            description: "账号状态0 未添加用户信息"
   AddOrUpdateUserInfoResponse:
     type: object
     properties:
@@ -447,5 +704,68 @@ definitions:
           technologyList:
             type: object
             properties:
-             0:
-              $ref: "#/definitions/TechnologyModel"
+              0:
+                $ref: "#/definitions/TechnologyModel"
+  GetArticlesResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          technologyList:
+            type: object
+            properties:
+              0:
+                $ref: "#/definitions/ArticleModel"
+  UploadTechnologyResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      data:
+        type: object
+        properties:
+          technology:
+            $ref: "#/definitions/TechnologyModel"
+  DeleteTechnologyResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+  UpdateArticleStatusResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: "返回码,200 表示正常，500 表示异常"
+        default: 200
+      message:
+        type: string
+        description: "返回信息，成功返回success,失败返回err"
+        default: "success"
+      date:
+        type: object
+        properties:
+          status:
+            type: integer
+            description: "修改后的状态"
