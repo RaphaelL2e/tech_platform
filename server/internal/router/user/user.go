@@ -78,13 +78,13 @@ func getUserinfo(c *gin.Context) {
 	userId := c.Param("userId")
 
 	ui, err := srv.GetUserinfo(c, userId)
-	if err!=nil{
+	if err != nil {
 		resp = response.CreateByErrorMessage(err)
 	}
-	fmt.Printf("%v",ui)
+	fmt.Printf("%v", ui)
 	if "" == ui.UserId {
 		resp = response.CreateBySuccessMessage("not found userinfo")
-	}else {
+	} else {
 		resp = response.CreateBySuccessData(ui)
 	}
 
