@@ -3,21 +3,20 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"tech_platform/server/internal/store/user"
 	"tech_platform/server/pkg/jwtutil"
-
-	"tech_platform/server/internal/user/store"
 
 	"github.com/urfave/cli/v2"
 )
 
-func setupStore(c *cli.Context) store.Store {
+func setupStore(c *cli.Context) user.Store {
 	rdsConfig := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=UTC&time_zone='%s'",
 		c.String("db-user"),
 		c.String("db-pwd"),
 		c.String("db-addr"),
 		c.String("db-name"),
 		url.QueryEscape("+00:00"))
-	return store.New(rdsConfig)
+	return user.New(rdsConfig)
 }
 
 func setupJWTHelper(c *cli.Context) jwtutil.JWTHelper {

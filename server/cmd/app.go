@@ -10,7 +10,7 @@ import (
 	"os/signal"
 	"syscall"
 	"tech_platform/server/internal/middleware"
-	"tech_platform/server/internal/user/router"
+	"tech_platform/server/internal/router/user"
 	"time"
 )
 
@@ -52,7 +52,7 @@ var flags = []cli.Flag{
 func server(c *cli.Context) (err error) {
 	store := setupStore(c)
 	jwtHelper := setupJWTHelper(c)
-	handler := router.Setup(
+	handler := user.Setup(
 		c,
 		jwtHelper,
 		middleware.Store(store),

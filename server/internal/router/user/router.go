@@ -1,20 +1,16 @@
-package router
+package user
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/urfave/cli/v2"
 	"tech_platform/server/internal/middleware"
-	"tech_platform/server/internal/user/server"
+	"tech_platform/server/internal/server/user"
 	"tech_platform/server/pkg/jwtutil"
 )
 
 var (
-	srv *server.Handler
+	srv *user.Handler
 )
-
-func init() {
-
-}
 
 func Setup(c *cli.Context, helper1 jwtutil.JWTHelper, middlewares ...gin.HandlerFunc) *gin.Engine {
 	gin.DisableConsoleColor()
@@ -30,7 +26,7 @@ func Setup(c *cli.Context, helper1 jwtutil.JWTHelper, middlewares ...gin.Handler
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	router.Use(gin.Recovery())
 	router.Use(middlewares...)
-	srv = server.NewHandler(helper1)
+	srv = user.NewHandler(helper1)
 
 	g0 := router.Group("/api/v1/user")
 	{

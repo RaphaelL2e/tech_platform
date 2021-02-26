@@ -1,15 +1,15 @@
 package middleware
 
 import (
-	"tech_platform/server/internal/user/store"
+	"tech_platform/server/internal/store/user"
 
 	"github.com/gin-gonic/gin"
 )
 // Store is a middleware function that initializes the store and attaches to
 // the context of every http.Request.
-func Store(v store.Store) gin.HandlerFunc {
+func Store(v user.Store) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		store.ToContext(c, v)
+		user.ToContext(c, v)
 		c.Next()
 	}
 }

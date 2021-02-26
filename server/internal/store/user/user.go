@@ -1,14 +1,14 @@
-package store
+package user
 
 import (
 	"errors"
 	"gorm.io/gorm"
 	"strconv"
-	"tech_platform/server/internal/user/model"
+	"tech_platform/server/internal/model/user"
 	"time"
 )
 
-func (d *DataHandler) register(u model.User) (string, error) {
+func (d *DataHandler) register(u user.User) (string, error) {
 
 	err := d.DB.Create(u).Error
 	if err != nil {
@@ -16,11 +16,11 @@ func (d *DataHandler) register(u model.User) (string, error) {
 	}
 
 	//init userInfo
-	ui := model.Userinfo{
+	ui := user.Userinfo{
 		UserId:    u.Id,
 		Name:      "polar_" + strconv.FormatInt(time.Now().Unix(), 10),
-		Avatar:    model.DefaultAvatar,
-		Introduce: model.DefaultIntroduce,
+		Avatar:    user.DefaultAvatar,
+		Introduce: user.DefaultIntroduce,
 		CreateAt:  time.Now(),
 		UpdateAt:  time.Now(),
 	}
@@ -32,33 +32,33 @@ func (d *DataHandler) register(u model.User) (string, error) {
 	return u.Id, nil
 }
 
-func (d *DataHandler) login(u model.User) (model.LoginResponse, error) {
+func (d *DataHandler) login(u user.User) (user.LoginResponse, error) {
 	err := d.DB.Where("username = ?", u.Username).Where("password = ?", u.Password).First(&u).Error
 	if err != nil {
-		return model.LoginResponse{}, err
+		return user.LoginResponse{}, err
 	}
-	return model.LoginResponse{
+	return user.LoginResponse{
 		Status: u.Status,
 		UserId: u.Id,
 	}, nil
 }
 
-func (d *DataHandler) updateUserinfo(ui model.Userinfo) (model.Userinfo, error) {
+func (d *DataHandler) updateUserinfo(ui user.Userinfo) (user.Userinfo, error) {
 	ui.UpdateAt = time.Now()
 	err := d.DB.Model(&ui).UpdateColumns(ui).Scan(&ui).Error
 	if err != nil {
-		return model.Userinfo{}, err
+		return user.Userinfo{}, err
 	}
 	return ui, nil
 }
 
-func (d *DataHandler)getUserinfo(userId string)(model.Userinfo,error)  {
-	ui := new(model.Userinfo)
+func (d *DataHandler)getUserinfo(userId string)(user.Userinfo,error)  {
+	ui := new(user.Userinfo)
 	ui.UserId= userId
 	err :=d.DB.First(&ui).Error
 	if err!=nil{
 		if errors.Is(err,gorm.ErrRecordNotFound){
-			return model.Userinfo{}, nil
+			return user.Userinfo{}, nil
 		}
 		return *ui, err
 	}

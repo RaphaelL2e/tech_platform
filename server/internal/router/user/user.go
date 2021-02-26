@@ -1,11 +1,11 @@
-package router
+package user
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"tech_platform/server/internal/model/user"
 	"tech_platform/server/internal/pkg/response"
-	"tech_platform/server/internal/user/model"
 )
 
 func register(c *gin.Context) {
@@ -18,7 +18,7 @@ func register(c *gin.Context) {
 		c.JSON(http.StatusOK, resp)
 	}()
 
-	var req model.RegisterRequest
+	var req user.RegisterRequest
 	err = c.Bind(&req)
 	if err != nil {
 		return
@@ -38,7 +38,7 @@ func login(c *gin.Context) {
 		c.JSON(http.StatusOK, resp)
 	}()
 
-	var req model.LoginRequest
+	var req user.LoginRequest
 	err = c.Bind(&req)
 	if err != nil {
 		return
@@ -57,7 +57,7 @@ func updateUserInfo(c *gin.Context) {
 		c.JSON(http.StatusOK, resp)
 	}()
 
-	var req model.Userinfo
+	var req user.Userinfo
 	err = c.Bind(&req)
 	if err != nil {
 		return
