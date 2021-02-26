@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"tech_platform/server/internal/model/user"
-	user2 "tech_platform/server/internal/store/user"
+	"tech_platform/server/internal/store"
+	userstore "tech_platform/server/internal/store/user"
 	"tech_platform/server/pkg/jwtutil"
 	"time"
 
@@ -33,7 +34,7 @@ func (h *Handler) Register(c context.Context, req user.RegisterRequest) (string,
 		UpdateAt: time.Now(),
 	}
 
-	userId, err := user2.Register(c, u)
+	userId, err := userstore.Register(store.FromContext(c),u)
 	if err != nil {
 		return "", errors.New("register error")
 	}
@@ -46,7 +47,7 @@ func (h *Handler) Login(c context.Context, req user.LoginRequest) (user.LoginRes
 		Username: req.Username,
 		Password: mymd5.Encryption(req.Password),
 	}
-	us, err := user2.Login(c, u)
+	us, err := userstore.Login(store.FromContext(c), u)
 	if err != nil {
 		return user.LoginResponse{}, fmt.Errorf("login error")
 	}
@@ -63,7 +64,7 @@ func (h *Handler) Login(c context.Context, req user.LoginRequest) (user.LoginRes
 }
 
 func (h *Handler) UpdateUserinfo(c context.Context, ui user.Userinfo) (user.Userinfo,error) {
-	ui,err := user2.UpdateUserinfo(c,ui)
+	ui,err := userstore.UpdateUserinfo(store.FromContext(c),ui)
 	if err!=nil{
 		return user.Userinfo{},fmt.Errorf("update userinfo error")
 	}
@@ -71,7 +72,7 @@ func (h *Handler) UpdateUserinfo(c context.Context, ui user.Userinfo) (user.User
 }
 
 func (h *Handler) GetUserinfo(c *gin.Context, userId string) (user.Userinfo, error) {
-	ui,err := user2.GetUserinfo(c,userId)
+	ui,err := userstore.GetUserinfo(store.FromContext(c),userId)
 	if err!=nil{
 		return user.Userinfo{},fmt.Errorf("get userinfo error")
 	}
