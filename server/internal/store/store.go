@@ -7,15 +7,18 @@ import (
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
+	adminstore "tech_platform/server/internal/store/admin"
 	userstore "tech_platform/server/internal/store/user"
 	"time"
 )
+
 type Store interface {
 	userstore.Store
 }
 
 type DataHandler struct {
-	userstore.DataHandler
+	*userstore.UserDataHandler
+	*adminstore.AdminDataHandler
 }
 
 func New(resConfig string) Store {
@@ -24,7 +27,7 @@ func New(resConfig string) Store {
 		logger.Config{
 			SlowThreshold: 500 * time.Millisecond, // 慢 SQL 阈值
 			LogLevel:      logger.Info,            // Log level
-			Colorful:      true,                  // 禁用彩色打印
+			Colorful:      true,                   // 禁用彩色打印
 		},
 	)
 	db, err := gorm.Open(mysql.Open(resConfig), &gorm.Config{
@@ -36,7 +39,11 @@ func New(resConfig string) Store {
 	}
 
 	return &DataHandler{
-		userstore.DataHandler{DB: db},
+		&userstore.UserDataHandler{
+			DB: db,
+		},
+		&adminstore.AdminDataHandler{
+			DB: db,
+		},
 	}
 }
-

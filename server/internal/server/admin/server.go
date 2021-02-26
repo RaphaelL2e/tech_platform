@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"github.com/gin-gonic/gin"
+	"context"
 	"tech_platform/server/internal/model/user"
 	"tech_platform/server/pkg/jwtutil"
 )
@@ -14,8 +14,7 @@ func NewHandler(helper jwtutil.JWTHelper) *Handler {
 	return &Handler{jwtHelper: helper}
 }
 
-func (h Handler) AdminLogin(c *gin.Context, req user.LoginRequest) (user.LoginResponse, error) {
-
+func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) (user.LoginResponse, error) {
 	return user.LoginResponse{}, nil
 }
 

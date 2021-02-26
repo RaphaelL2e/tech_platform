@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func (d *DataHandler) Register(u user.User) (string, error) {
+func (d *UserDataHandler) Register(u user.User) (string, error) {
 
 	err := d.DB.Create(u).Error
 	if err != nil {
@@ -32,7 +32,7 @@ func (d *DataHandler) Register(u user.User) (string, error) {
 	return u.Id, nil
 }
 
-func (d *DataHandler) Login(u user.User) (user.LoginResponse, error) {
+func (d *UserDataHandler) Login(u user.User) (user.LoginResponse, error) {
 	err := d.DB.Where("username = ?", u.Username).Where("password = ?", u.Password).First(&u).Error
 	if err != nil {
 		return user.LoginResponse{}, err
@@ -43,7 +43,7 @@ func (d *DataHandler) Login(u user.User) (user.LoginResponse, error) {
 	}, nil
 }
 
-func (d *DataHandler) UpdateUserinfo(ui user.Userinfo) (user.Userinfo, error) {
+func (d *UserDataHandler) UpdateUserinfo(ui user.Userinfo) (user.Userinfo, error) {
 	ui.UpdateAt = time.Now()
 	err := d.DB.Model(&ui).UpdateColumns(ui).Scan(&ui).Error
 	if err != nil {
@@ -52,7 +52,7 @@ func (d *DataHandler) UpdateUserinfo(ui user.Userinfo) (user.Userinfo, error) {
 	return ui, nil
 }
 
-func (d *DataHandler) GetUserinfo(userId string)(user.Userinfo,error)  {
+func (d *UserDataHandler) GetUserinfo(userId string)(user.Userinfo,error)  {
 	ui := new(user.Userinfo)
 	ui.UserId= userId
 	err :=d.DB.First(&ui).Error

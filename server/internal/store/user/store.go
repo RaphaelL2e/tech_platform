@@ -12,7 +12,7 @@ type Store interface {
 	GetUserinfo(userId string)(user.Userinfo,error)
 }
 
-type DataHandler struct {
+type UserDataHandler struct {
 	DB *gorm.DB
 }
 

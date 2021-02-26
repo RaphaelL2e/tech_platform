@@ -33,7 +33,6 @@ func (h *Handler) Register(c context.Context, req user.RegisterRequest) (string,
 		CreateAt: time.Now(),
 		UpdateAt: time.Now(),
 	}
-
 	userId, err := userstore.Register(store.FromContext(c),u)
 	if err != nil {
 		return "", errors.New("register error")
