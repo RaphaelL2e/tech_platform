@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/urfave/cli/v2"
 	"tech_platform/server/internal/middleware"
+	"tech_platform/server/internal/router/admin"
 	"tech_platform/server/internal/router/user"
 	"tech_platform/server/pkg/jwtutil"
 )
@@ -26,6 +27,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 	PublicGroup := router.Group("/api/v1")
 	{
 		user.UserRouter0(PublicGroup,jwtHelper)
+		admin.AdminRouter0(PublicGroup,jwtHelper)
 	}
 
 	PrivateGroup := router.Group("/api/v1")

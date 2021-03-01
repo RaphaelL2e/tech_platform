@@ -14,6 +14,7 @@ import (
 
 type Store interface {
 	userstore.Store
+	adminstore.Store
 }
 
 type DataHandler struct {

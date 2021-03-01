@@ -22,5 +22,5 @@ func adminLogin(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	resp.Data, err = srv.AdminLogin(c, req)
+	resp = srv.AdminLogin(c, req)
 }
