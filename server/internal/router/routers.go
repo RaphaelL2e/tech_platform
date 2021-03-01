@@ -34,6 +34,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 	PrivateGroup.Use(middleware.JWTAuth(c.String("jwt-key")))
 	{
 		user.UserRouter1(PrivateGroup)
+		admin.AdminRouter1(PrivateGroup)
 	}
 
 	return router

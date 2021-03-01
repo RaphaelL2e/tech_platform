@@ -19,4 +19,11 @@ func AdminRouter0(router *gin.RouterGroup,helper jwtutil.JWTHelper){
 	srv = admin.NewHandler(helper)
 }
 
+func AdminRouter1(router *gin.RouterGroup){
+	g1 := router.Group("/admin")
+	{
+		g1.POST("/add",adminAdd)
+	}
+}
+
 

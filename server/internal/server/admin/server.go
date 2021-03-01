@@ -3,6 +3,7 @@ package admin
 import (
 	"context"
 	mymd5 "github.com/leeyf888/go-tools/md5"
+	"tech_platform/server/internal/model/admin"
 	"tech_platform/server/internal/model/user"
 	"tech_platform/server/internal/pkg/response"
 	"tech_platform/server/internal/store"
@@ -48,4 +49,12 @@ func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) response.S
 	ur.Token = token
 
 	return response.CreateBySuccessData(ur)
+}
+
+func (h Handler) AdminAdd(c context.Context,req admin.Admin) response.ServerResponse {
+ 	ok,err:= adminstore.AdminAdd(store.FromContext(c),req)
+ 	if err!=nil|| !ok{
+ 		return response.CreateByError()
+	}
+	return response.CreateBySuccess()
 }
