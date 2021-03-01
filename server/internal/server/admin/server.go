@@ -2,7 +2,6 @@ package admin
 
 import (
 	"context"
-	"errors"
 	mymd5 "github.com/leeyf888/go-tools/md5"
 	"tech_platform/server/internal/model/user"
 	"tech_platform/server/internal/pkg/response"
@@ -20,7 +19,7 @@ func NewHandler(helper jwtutil.JWTHelper) *Handler {
 	return &Handler{jwtHelper: helper}
 }
 
-func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) (response.ServerResponse) {
+func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) response.ServerResponse {
 	store1 := store.FromContext(c)
 	u := user.User{
 		Username: req.Username,
@@ -28,23 +27,19 @@ func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) (response.
 	}
 	us, err := userstore.Login(store1, u)
 	if err != nil {
-		return response.CreateByErrorMessage(err)
+		return response.CreateByErrorCodeMessage(response.LoginErrCode)
 	}
 	if us.Status == user.Forbidden {
 		return response.CreateByErrorCodeMessage(response.StatusForbiddenCode)
 	}
 
-	userId, err := adminstore.AdminLogin(store1, u)
-	if err != nil {
-		return response.CreateByErrorMessage(err)
+	userId, err := adminstore.AdminLogin(store1, us.UserId)
+	if err != nil || userId == "" {
+		return response.CreateByErrorCodeMessage(response.AdminErrCode)
 	}
-	if userId == "" {
-		return response.CreateByErrorMessage(errors.New("not is admin"))
-	}
-
-	token, err := h.jwtHelper.GenAdminToken(userId, true)
+	token, err := h.jwtHelper.GenAdminToken(userId,true)
 	if err != nil {
-		return response.CreateByErrorMessage(err)
+		return response.CreateByErrorCodeMessage(response.TokenGenErrCode)
 	}
 
 	ur := user.LoginResponse{}

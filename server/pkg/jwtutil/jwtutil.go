@@ -1,6 +1,7 @@
 package jwtutil
 
 import (
+	"fmt"
 	"time"
 
 	"gopkg.in/dgrijalva/jwt-go.v3"
@@ -21,7 +22,7 @@ type CustomClaims struct {
 	jwt.StandardClaims
 }
 
-func (h *JWTHelper) GenAdminToken(id string, admin bool) (string, error) {
+func (h JWTHelper) GenAdminToken(id string, admin bool) (tokenString string, err error) {
 	claims := CustomClaims{
 		id,
 		admin,
@@ -32,10 +33,13 @@ func (h *JWTHelper) GenAdminToken(id string, admin bool) (string, error) {
 	}
 
 	// Create a new token object, specifying signing method and the claims
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Sign and get the complete encoded token as a string using the secret
-	return token.SignedString([]byte(h.Conf.Key))
+	fmt.Println(h.Conf.Key)
+	tokenString, err = token.SignedString([]byte(h.Conf.Key))
+	fmt.Println(1,err)
+	return
 }
 
 func (h JWTHelper) GenToken(id string) (tokenString string, err error) {
