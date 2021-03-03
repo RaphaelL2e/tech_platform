@@ -7,7 +7,7 @@ const (
 
 type ServerResponse struct {
 	ResponseCode
-	Data interface{}
+	Data interface{} `json:"data"`
 }
 
 func CreateBySuccess() ServerResponse {

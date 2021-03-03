@@ -2,6 +2,9 @@ package technology
 
 import (
 	"context"
+	"errors"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"tech_platform/server/internal/model/technology"
 	"tech_platform/server/internal/pkg/response"
 	"tech_platform/server/internal/store"
@@ -19,6 +22,18 @@ func (h Handler) AddTechnology(c context.Context,req technology.Technology) resp
 		return response.CreateByErrorMessage(err)
 	}
 	return response.CreateBySuccessData(at)
+}
+
+func (h Handler) GetTechnology(c *gin.Context, id int64) response.ServerResponse {
+	tech_store := store.FromContext(c)
+	oneById,err :=technologystore.GetOneById(tech_store,id)
+	if err!=nil{
+		if errors.Is(err,gorm.ErrRecordNotFound){
+			return response.CreateByErrorCodeMessage(response.NotFoundCode)
+		}
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(oneById)
 }
 
 func NewHandler() *Handler {

@@ -3,6 +3,7 @@ package technology
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"tech_platform/server/internal/model/technology"
 	"tech_platform/server/internal/pkg/response"
 )
@@ -31,4 +32,24 @@ func addTechnology(c *gin.Context) {
 	req.UserId = user_id.(string)
 
 	resp = srv.AddTechnology(c, req)
+}
+func getTechnology(c *gin.Context){
+	resp := response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err != nil {
+			resp = response.CreateByErrorMessage(err)
+		}
+		if resp.Code == response.NotFoundCode.Code{
+			c.JSON(http.StatusNotFound, resp)
+		}else {
+			c.JSON(http.StatusOK, resp)
+		}
+	}()
+
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return
+	}
+	resp = srv.GetTechnology(c,id)
 }
