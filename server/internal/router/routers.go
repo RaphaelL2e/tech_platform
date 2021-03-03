@@ -6,6 +6,7 @@ import (
 	"tech_platform/server/internal/middleware"
 	"tech_platform/server/internal/router/admin"
 	"tech_platform/server/internal/router/user"
+	"tech_platform/server/internal/router/technology"
 	"tech_platform/server/pkg/jwtutil"
 )
 
@@ -28,6 +29,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 	{
 		user.UserRouter0(PublicGroup,jwtHelper)
 		admin.AdminRouter0(PublicGroup,jwtHelper)
+		technology.TechnologyRouter0(PublicGroup)
 	}
 
 	PrivateGroup := router.Group("/api/v1")
@@ -35,6 +37,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 	{
 		user.UserRouter1(PrivateGroup)
 		admin.AdminRouter1(PrivateGroup)
+		technology.TechnologyRouter1(PrivateGroup)
 	}
 
 	return router

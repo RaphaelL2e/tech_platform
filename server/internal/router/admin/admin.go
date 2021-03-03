@@ -39,6 +39,7 @@ func adminAdd(c *gin.Context) {
 	admin1 := is_admin.(bool)
 	if !admin1 {
 		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
+		return
 	}
 	var req admin.Admin
 	err = c.Bind(&req)

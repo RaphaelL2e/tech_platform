@@ -25,6 +25,8 @@ type DataHandler struct {
 	*technologystore.TechnologyDataHandler
 }
 
+
+
 func New(resConfig string) Store {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer

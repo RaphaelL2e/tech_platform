@@ -21,12 +21,12 @@ func NewHandler(helper jwtutil.JWTHelper) *Handler {
 }
 
 func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) response.ServerResponse {
-	store1 := store.FromContext(c)
+	admin_store := store.FromContext(c)
 	u := user.User{
 		Username: req.Username,
 		Password: mymd5.Encryption(req.Password),
 	}
-	us, err := userstore.Login(store1, u)
+	us, err := userstore.Login(admin_store, u)
 	if err != nil {
 		return response.CreateByErrorCodeMessage(response.LoginErrCode)
 	}
@@ -34,7 +34,7 @@ func (h Handler) AdminLogin(c context.Context, req user.LoginRequest) response.S
 		return response.CreateByErrorCodeMessage(response.StatusForbiddenCode)
 	}
 
-	userId, err := adminstore.AdminLogin(store1, us.UserId)
+	userId, err := adminstore.AdminLogin(admin_store, us.UserId)
 	if err != nil || userId == "" {
 		return response.CreateByErrorCodeMessage(response.AdminErrCode)
 	}

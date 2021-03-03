@@ -13,3 +13,7 @@ type Technology struct {
 	CreateAt time.Time `gorm:"create_at" json:"create_at"`
 	UpdateAt time.Time `gorm:"update_at" json:"update_at"`
 }
+
+type AddTechnology struct {
+	Technology
+}

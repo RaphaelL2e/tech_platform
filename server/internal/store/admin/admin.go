@@ -12,7 +12,7 @@ type AdminDataHandler struct {
 
 func (d *AdminDataHandler) AdminLogin(u string) (string, error) {
 	user_id := ""
-	err := d.DB.Table("admin").Select("user_id").Where("user_id = ?", u).Pluck("user_id", &user_id).Error
+	err := d.DB.Table("admins").Select("user_id").Where("user_id = ?", u).Pluck("user_id", &user_id).Error
 	if err != nil {
 		return "", err
 	}

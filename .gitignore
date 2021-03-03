@@ -2,3 +2,4 @@
 .gen
 *.exe
 *.sh
+venv/*
