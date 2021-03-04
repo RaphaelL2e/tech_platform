@@ -62,3 +62,12 @@ func (h Handler) DeleteTechnology(c *gin.Context, req technology.DeleteTechnolog
 	}
 
 }
+
+func (h Handler) ListTechnology(c *gin.Context, req technology.ListModel) response.ServerResponse {
+	tech_store := store.FromContext(c)
+	list,err :=technologystore.List(tech_store,req)
+	if err!=nil {
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(list)
+}

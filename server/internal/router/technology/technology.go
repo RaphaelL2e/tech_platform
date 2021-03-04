@@ -103,3 +103,26 @@ func deleteTechnology(c *gin.Context){
 
 	resp = srv.DeleteTechnology(c,req)
 }
+
+
+func listTechnology(c *gin.Context){
+	resp := response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err != nil {
+			resp = response.CreateByErrorMessage(err)
+		}
+		if resp.Code == response.NotFoundCode.Code{
+			c.JSON(http.StatusNotFound, resp)
+		}else {
+			c.JSON(http.StatusOK, resp)
+		}
+	}()
+
+	var req technology.ListModel
+	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+	resp = srv.ListTechnology(c,req)
+}

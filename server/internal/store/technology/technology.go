@@ -49,3 +49,12 @@ func (d *TechnologyDataHandler) Delete(t technology.DeleteTechnology) (bool, err
 	}
 	return true, nil
 }
+
+func (d *TechnologyDataHandler) List(lm technology.ListModel) ([]technology.ListTechnology, error) {
+	var list []technology.ListTechnology
+	err :=d.DB.Model(&technology.Technology{}).Limit(lm.PageSize).Offset((lm.PageNum-1)*lm.PageSize).Scan(&list).Error
+	if err!=nil{
+		return nil, err
+	}
+	return list, nil
+}

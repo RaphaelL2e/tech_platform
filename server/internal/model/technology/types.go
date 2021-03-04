@@ -1,6 +1,8 @@
 package technology
 
-import "time"
+import (
+	"time"
+)
 
 type Technology struct {
 	Id int `gorm:"id" gorm:"primaryKey" json:"id"`
@@ -20,4 +22,20 @@ type AddTechnology struct {
 
 type DeleteTechnology struct {
 	Id int `gorm:"id" gorm:"primaryKey" json:"id" binding:"required"`
+}
+
+type ListModel struct {
+	PageNum int `json:"page_num"`
+	PageSize int `json:"page_size"`
+}
+
+type ListTechnology struct {
+	Id int `gorm:"id" gorm:"primaryKey" json:"id"`
+	Name string `gorm:"name" json:"name"`
+	Summary string `gorm:"summary" json:"summary"`
+	Image string `gorm:"image" json:"image"`
+	ImageType int `gorm:"image_type" json:"image_type"`
+	UserId string `gorm:"user_id" json:"user_id"`
+	CreateAt time.Time `gorm:"create_at" json:"create_at"`
+	UpdateAt time.Time `gorm:"update_at" json:"update_at"`
 }
