@@ -5,6 +5,7 @@ import "tech_platform/server/internal/model/technology"
 type Store interface {
 	Add(t technology.Technology)(technology.AddTechnology,error)
 	GetOneById(id int64)(technology.Technology,error)
+	Update(t technology.Technology)(technology.Technology,error)
 }
 
 func Add(store Store,technology technology.Technology)(technology.AddTechnology,error)  {
@@ -13,6 +14,10 @@ func Add(store Store,technology technology.Technology)(technology.AddTechnology,
 
 func GetOneById(store Store,id int64)(technology.Technology,error){
 	return store.GetOneById(id)
+}
+
+func Update(store Store,technology technology.Technology)(technology.Technology,error)  {
+	return store.Update(technology)
 }
 
 

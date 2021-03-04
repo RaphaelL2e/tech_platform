@@ -31,3 +31,12 @@ func (d *TechnologyDataHandler) GetOneById(id int64) (technology.Technology, err
 	}
 	return *technology,nil
 }
+
+func (d *TechnologyDataHandler) Update(t technology.Technology) (technology.Technology, error) {
+	t.UpdateAt = time.Now()
+	err := d.DB.Model(&t).Updates(t).Scan(&t).Error
+	if err != nil {
+		return technology.Technology{}, err
+	}
+	return t, nil
+}

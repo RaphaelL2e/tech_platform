@@ -39,3 +39,13 @@ func (h Handler) GetTechnology(c *gin.Context, id int64) response.ServerResponse
 func NewHandler() *Handler {
 	return &Handler{}
 }
+
+func (h Handler) UpdateTechnology(c context.Context,req technology.Technology) response.ServerResponse {
+
+	tech_store := store.FromContext(c)
+	ut,err :=technologystore.Update(tech_store,req)
+	if err!=nil{
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(ut)
+}
