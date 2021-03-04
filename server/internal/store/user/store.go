@@ -2,6 +2,7 @@ package user
 
 import (
 	"gorm.io/gorm"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/user"
 )
 
@@ -10,6 +11,7 @@ type Store interface {
 	Login(u user.User) (user.LoginResponse, error)
 	UpdateUserinfo(ui user.Userinfo)(user.Userinfo,error)
 	GetUserinfo(userId string)(user.Userinfo,error)
+	ListUser(lm model.ListModel)([]user.ListUser,error)
 }
 
 type UserDataHandler struct {
@@ -32,4 +34,8 @@ func UpdateUserinfo(store Store,ui user.Userinfo)(user.Userinfo,error){
 
 func GetUserinfo(store Store,userId string)(user.Userinfo,error){
 	return store.GetUserinfo(userId)
+}
+
+func ListUser(store Store,lm model.ListModel)([]user.ListUser,error){
+	return store.ListUser(lm)
 }

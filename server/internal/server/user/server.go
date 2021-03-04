@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/user"
+	"tech_platform/server/internal/pkg/response"
 	"tech_platform/server/internal/store"
 	userstore "tech_platform/server/internal/store/user"
 	"tech_platform/server/pkg/jwtutil"
@@ -70,10 +71,19 @@ func (h *Handler) UpdateUserinfo(c context.Context, ui user.Userinfo) (user.User
 	return ui,nil
 }
 
-func (h *Handler) GetUserinfo(c *gin.Context, userId string) (user.Userinfo, error) {
+func (h *Handler) GetUserinfo(c context.Context, userId string) (user.Userinfo, error) {
 	ui,err := userstore.GetUserinfo(store.FromContext(c),userId)
 	if err!=nil{
 		return user.Userinfo{},fmt.Errorf("get userinfo error")
 	}
 	return ui,nil
+}
+
+func (h *Handler) ListUser(c context.Context,req model.ListModel) response.ServerResponse {
+	user_store := store.FromContext(c)
+	list,err :=userstore.ListUser(user_store,req)
+	if err!=nil{
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(list)
 }

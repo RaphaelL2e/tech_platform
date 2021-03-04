@@ -25,5 +25,7 @@ func UserRouter1(router *gin.RouterGroup) {
 	g1 := router.Group("/user")
 	{
 		g1.POST("/updateUserinfo", updateUserInfo)
+		g1.POST("/list",listUser)
 	}
 }
+

@@ -48,3 +48,14 @@ type LoginResponse struct {
 type UpdateUserinfoRequest struct {
 	Userinfo
 }
+
+type ListUser struct {
+	UserId    string    `gorm:"primaryKey" json:"user_id" `
+	Username  string    `gorm:"username" json:"username"`
+	Status    int       `gorm:"status" json:"status"`
+	Name      string    `gorm:"name" json:"name"`
+	Avatar    string    `gorm:"avatar" json:"avatar"`
+	Introduce string    `gorm:"introduce" json:"introduce"`
+	CreateAt  time.Time `gorm:"create_at" json:"create_at"`
+	UpdateAt  time.Time `gorm:"update_at" json:"update_at"`
+}

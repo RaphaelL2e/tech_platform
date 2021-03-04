@@ -2,8 +2,10 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"gorm.io/gorm"
 	"strconv"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/user"
 	"time"
 )
@@ -52,15 +54,27 @@ func (d *UserDataHandler) UpdateUserinfo(ui user.Userinfo) (user.Userinfo, error
 	return ui, nil
 }
 
-func (d *UserDataHandler) GetUserinfo(userId string)(user.Userinfo,error)  {
+func (d *UserDataHandler) GetUserinfo(userId string) (user.Userinfo, error) {
 	ui := new(user.Userinfo)
-	ui.UserId= userId
-	err :=d.DB.First(&ui).Error
-	if err!=nil{
-		if errors.Is(err,gorm.ErrRecordNotFound){
+	ui.UserId = userId
+	err := d.DB.First(&ui).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return user.Userinfo{}, nil
 		}
 		return *ui, err
 	}
-	return *ui,nil
+	return *ui, nil
+}
+
+func (d *UserDataHandler) ListUser(lm model.ListModel) ([]user.ListUser, error) {
+	index := (lm.PageNum - 1) * lm.PageSize
+	sql := fmt.Sprintf("SELECT a.id, a.username, a.status, a.create_at, a.update_at, u.user_id, u.name, u.avatar, " +
+		"u.introduce FROM users a JOIN userinfos u on a.id = u.user_id LIMIT %v OFFSET %v", lm.PageSize, index)
+	var list []user.ListUser
+	err := d.DB.Raw(sql).Scan(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
 }
