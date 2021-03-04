@@ -24,10 +24,7 @@ type DeleteTechnology struct {
 	Id int `gorm:"id" gorm:"primaryKey" json:"id" binding:"required"`
 }
 
-type ListModel struct {
-	PageNum int `json:"page_num"`
-	PageSize int `json:"page_size"`
-}
+
 
 type ListTechnology struct {
 	Id int `gorm:"id" gorm:"primaryKey" json:"id"`

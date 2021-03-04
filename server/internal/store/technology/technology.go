@@ -2,6 +2,7 @@ package technology
 
 import (
 	"gorm.io/gorm"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/technology"
 	"time"
 )
@@ -50,7 +51,7 @@ func (d *TechnologyDataHandler) Delete(t technology.DeleteTechnology) (bool, err
 	return true, nil
 }
 
-func (d *TechnologyDataHandler) List(lm technology.ListModel) ([]technology.ListTechnology, error) {
+func (d *TechnologyDataHandler) List(lm model.ListModel) ([]technology.ListTechnology, error) {
 	var list []technology.ListTechnology
 	err :=d.DB.Model(&technology.Technology{}).Limit(lm.PageSize).Offset((lm.PageNum-1)*lm.PageSize).Scan(&list).Error
 	if err!=nil{

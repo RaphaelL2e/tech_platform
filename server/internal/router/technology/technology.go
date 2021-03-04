@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/technology"
 	"tech_platform/server/internal/pkg/response"
 )
@@ -119,7 +120,7 @@ func listTechnology(c *gin.Context){
 		}
 	}()
 
-	var req technology.ListModel
+	var req model.ListModel
 	err = c.Bind(&req)
 	if err != nil {
 		return

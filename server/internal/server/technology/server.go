@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/technology"
 	"tech_platform/server/internal/pkg/response"
 	"tech_platform/server/internal/store"
@@ -63,7 +64,7 @@ func (h Handler) DeleteTechnology(c *gin.Context, req technology.DeleteTechnolog
 
 }
 
-func (h Handler) ListTechnology(c *gin.Context, req technology.ListModel) response.ServerResponse {
+func (h Handler) ListTechnology(c *gin.Context, req model.ListModel) response.ServerResponse {
 	tech_store := store.FromContext(c)
 	list,err :=technologystore.List(tech_store,req)
 	if err!=nil {
