@@ -41,11 +41,24 @@ func NewHandler() *Handler {
 }
 
 func (h Handler) UpdateTechnology(c context.Context,req technology.Technology) response.ServerResponse {
-
 	tech_store := store.FromContext(c)
 	ut,err :=technologystore.Update(tech_store,req)
 	if err!=nil{
 		return response.CreateByErrorMessage(err)
 	}
 	return response.CreateBySuccessData(ut)
+}
+
+func (h Handler) DeleteTechnology(c *gin.Context, req technology.DeleteTechnology) response.ServerResponse {
+	tech_store := store.FromContext(c)
+	result,err :=technologystore.Delete(tech_store,req)
+	if err!=nil {
+		return response.CreateByErrorMessage(err)
+	}
+	if result{
+		return response.CreateBySuccess()
+	}else {
+		return response.CreateByError()
+	}
+
 }

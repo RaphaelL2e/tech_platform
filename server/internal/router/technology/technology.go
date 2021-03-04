@@ -79,3 +79,27 @@ func updateTechnology(c *gin.Context){
 
 	resp = srv.UpdateTechnology(c,req)
 }
+
+func deleteTechnology(c *gin.Context){
+	resp := response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err!=nil{
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK,resp)
+	}()
+	is_admin, _ := c.Get("is_admin")
+	admin1 := is_admin.(bool)
+	if !admin1 {
+		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
+		return
+	}
+	var req technology.DeleteTechnology
+	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+
+	resp = srv.DeleteTechnology(c,req)
+}

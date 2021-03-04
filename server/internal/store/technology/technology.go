@@ -40,3 +40,12 @@ func (d *TechnologyDataHandler) Update(t technology.Technology) (technology.Tech
 	}
 	return t, nil
 }
+
+func (d *TechnologyDataHandler) Delete(t technology.DeleteTechnology) (bool, error) {
+
+	err := d.DB.Delete(&technology.Technology{},"id = ?",t.Id).Error
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}

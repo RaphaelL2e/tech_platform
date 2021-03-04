@@ -17,3 +17,7 @@ type Technology struct {
 type AddTechnology struct {
 	Technology
 }
+
+type DeleteTechnology struct {
+	Id int `gorm:"id" gorm:"primaryKey" json:"id" binding:"required"`
+}

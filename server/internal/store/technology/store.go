@@ -6,6 +6,7 @@ type Store interface {
 	Add(t technology.Technology)(technology.AddTechnology,error)
 	GetOneById(id int64)(technology.Technology,error)
 	Update(t technology.Technology)(technology.Technology,error)
+	Delete(t technology.DeleteTechnology)(bool,error)
 }
 
 func Add(store Store,technology technology.Technology)(technology.AddTechnology,error)  {
@@ -18,6 +19,10 @@ func GetOneById(store Store,id int64)(technology.Technology,error){
 
 func Update(store Store,technology technology.Technology)(technology.Technology,error)  {
 	return store.Update(technology)
+}
+
+func Delete(store Store,technology technology.DeleteTechnology)(bool,error)  {
+	return store.Delete(technology)
 }
 
 
