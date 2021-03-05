@@ -12,7 +12,7 @@ var (
 func TechnologyRouter0(router *gin.RouterGroup){
 	g0 :=router.Group("/technology")
 	{
-		g0.GET("/get/:id",getTechnology)
+		g0.GET("/:id",getTechnology)
 		g0.POST("/list",listTechnology)
 	}
 
