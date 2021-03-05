@@ -13,8 +13,11 @@ func ArticleRouter0(router *gin.RouterGroup)  {
 	g0 :=router.Group("/article")
 	{
 		g0.GET("/:id",getArticleById)
+		g0.POST("/list",list)
 	}
 	srv = article.NewHandler()
 }
+
+
 
 
