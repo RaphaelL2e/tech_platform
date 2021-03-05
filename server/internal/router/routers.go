@@ -5,6 +5,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"tech_platform/server/internal/middleware"
 	"tech_platform/server/internal/router/admin"
+	"tech_platform/server/internal/router/article"
 	"tech_platform/server/internal/router/user"
 	"tech_platform/server/internal/router/technology"
 	"tech_platform/server/pkg/jwtutil"
@@ -30,6 +31,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 		user.UserRouter0(PublicGroup,jwtHelper)
 		admin.AdminRouter0(PublicGroup,jwtHelper)
 		technology.TechnologyRouter0(PublicGroup)
+		article.ArticleRouter0(PublicGroup)
 	}
 
 	PrivateGroup := router.Group("/api/v1")

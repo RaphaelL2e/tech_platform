@@ -24,13 +24,13 @@ func (d *TechnologyDataHandler) Add(t technology.Technology) (technology.AddTech
 
 func (d *TechnologyDataHandler) GetOneById(id int64) (technology.Technology, error) {
 
-	technology := new(technology.Technology)
-	technology.Id = int(id)
-	err :=d.DB.First(technology,technology).Error
+	t := new(technology.Technology)
+	t.Id = int(id)
+	err :=d.DB.First(t).Error
 	if err!=nil{
-		return *technology, err
+		return *t, err
 	}
-	return *technology,nil
+	return *t,nil
 }
 
 func (d *TechnologyDataHandler) Update(t technology.Technology) (technology.Technology, error) {

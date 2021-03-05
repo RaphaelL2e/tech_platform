@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	adminstore "tech_platform/server/internal/store/admin"
+	articlestore "tech_platform/server/internal/store/article"
 	technologystore "tech_platform/server/internal/store/technology"
 	userstore "tech_platform/server/internal/store/user"
 	"time"
@@ -17,12 +18,14 @@ type Store interface {
 	userstore.Store
 	adminstore.Store
 	technologystore.Store
+	articlestore.Store
 }
 
 type DataHandler struct {
 	*userstore.UserDataHandler
 	*adminstore.AdminDataHandler
 	*technologystore.TechnologyDataHandler
+	*articlestore.ArticleHandler
 }
 
 
@@ -52,6 +55,9 @@ func New(resConfig string) Store {
 			DB: db,
 		},
 		&technologystore.TechnologyDataHandler{
+			DB: db,
+		},
+		&articlestore.ArticleHandler{
 			DB: db,
 		},
 	}
