@@ -18,6 +18,15 @@ func ArticleRouter0(router *gin.RouterGroup)  {
 	srv = article.NewHandler()
 }
 
+func Articlerouter1(router *gin.RouterGroup){
+	g1 :=router.Group("/article")
+	{
+		g1.POST("/add",addArticle)
+	}
+}
+
+
+
 
 
 

@@ -3,6 +3,7 @@ package article
 import (
 	"gorm.io/gorm"
 	"tech_platform/server/internal/model/article"
+	"time"
 )
 
 type ArticleHandler struct {
@@ -29,4 +30,15 @@ func (d *ArticleHandler) ListArticle(req article.ListArticle) ([]article.ListArt
 		return nil, err
 	}
 	return list, nil
+}
+
+func (d *ArticleHandler)AddArticle(a article.Article)(article.Article,error){
+	a.CreateAt = time.Now()
+	a.UpdateAt = a.CreateAt
+	a.Status = 0 // 待审核
+	err :=d.DB.Create(&a).Error
+	if err!=nil{
+		return article.Article{}, err
+	}
+	return a,err
 }

@@ -35,6 +35,16 @@ func (h Handler) List(c *gin.Context, req article.ListArticle) response.ServerRe
 	return response.CreateBySuccessData(list)
 }
 
+func (h Handler) AddArticle(c *gin.Context, req article.Article) response.ServerResponse {
+	s :=store.FromContext(c)
+	a1,err := articlestore.AddArticle(s,req)
+	if err != nil {
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(a1)
+
+}
+
 func NewHandler() *Handler {
 	return &Handler{}
 }

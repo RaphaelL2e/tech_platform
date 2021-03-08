@@ -40,6 +40,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 		user.UserRouter1(PrivateGroup)
 		admin.AdminRouter1(PrivateGroup)
 		technology.TechnologyRouter1(PrivateGroup)
+		article.Articlerouter1(PrivateGroup)
 	}
 
 	return router
