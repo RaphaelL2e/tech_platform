@@ -66,6 +66,24 @@ func (h Handler) UpdateArticle(c *gin.Context, req article.Article) response.Ser
 	return response.CreateBySuccessData(a1)
 }
 
+func (h Handler) DeleteArticle(c *gin.Context, req article.Article) response.ServerResponse {
+	s:=store.FromContext(c)
+	admin,_ := c.Get("is_admin")
+	isAdmin := admin.(bool)
+	if !isAdmin{
+		result :=articlestore.CheckAuthority(s,req.UserId,req.Id)
+		if !result{
+			return response.CreateByErrorCodeMessage(response.ForbiddenCode)
+		}
+	}
+	aid :=req.Id
+	err :=articlestore.DeleteArticle(s,aid)
+	if err!=nil{
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccess()
+}
+
 func NewHandler() *Handler {
 	return &Handler{}
 }

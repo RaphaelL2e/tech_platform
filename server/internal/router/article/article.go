@@ -83,3 +83,25 @@ func updateArticle(c *gin.Context) {
 
 	resp = srv.UpdateArticle(c, req)
 }
+
+
+func deleteArticle(c *gin.Context){
+	resp :=response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err != nil {
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK, resp)
+	}()
+
+	var req article.Article
+	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+	user_id, _ := c.Get("user_id")
+	req.UserId = user_id.(string)
+
+	resp = srv.DeleteArticle(c, req)
+}

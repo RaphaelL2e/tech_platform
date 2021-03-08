@@ -30,7 +30,6 @@ func JWTAuth(key string) gin.HandlerFunc {
 		})
 
 		if err != nil {
-			fmt.Println(2)
 			resp := response.CreateByErrorCodeMessage(response.ForbiddenCode)
 			c.JSON(http.StatusUnauthorized, resp)
 			c.Abort()
@@ -41,7 +40,6 @@ func JWTAuth(key string) gin.HandlerFunc {
 			c.Set("user_id", claims["user_id"])
 			c.Set("is_admin", claims["is_admin"])
 		} else {
-			fmt.Println(3)
 			resp := response.CreateByErrorCodeMessage(response.ForbiddenCode)
 			c.JSON(http.StatusUnauthorized, resp)
 			c.Abort()
