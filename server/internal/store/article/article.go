@@ -32,13 +32,32 @@ func (d *ArticleHandler) ListArticle(req article.ListArticle) ([]article.ListArt
 	return list, nil
 }
 
-func (d *ArticleHandler)AddArticle(a article.Article)(article.Article,error){
+func (d *ArticleHandler) AddArticle(a article.Article) (article.Article, error) {
 	a.CreateAt = time.Now()
 	a.UpdateAt = a.CreateAt
 	a.Status = 0 // 待审核
-	err :=d.DB.Create(&a).Error
-	if err!=nil{
+	err := d.DB.Create(&a).Error
+	if err != nil {
 		return article.Article{}, err
 	}
-	return a,err
+	return a, err
+}
+
+func (d *ArticleHandler) UpdateArticle(a article.Article) (article.Article, error) {
+	a.UpdateAt = time.Now()
+	a.Status = 0 // 待审核
+	err := d.DB.Model(&a).Updates(a).Scan(&a).Error
+	if err != nil {
+		return article.Article{}, err
+	}
+	return a, err
+}
+
+func (d *ArticleHandler) CheckAuthority(uid string, aid int) bool {
+	var suid string
+	err := d.DB.Model(&article.Article{}).Select("user_id").Where("id = ?", aid).Pluck("user_id", &suid).Error
+	if err != nil {
+		return false
+	}
+	return suid == uid
 }

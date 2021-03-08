@@ -22,7 +22,7 @@ func getArticleById(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	resp =srv.GetArticleById(c,id)
+	resp = srv.GetArticleById(c, id)
 }
 
 func list(c *gin.Context) {
@@ -36,11 +36,11 @@ func list(c *gin.Context) {
 	}()
 	var req article.ListArticle
 	err = c.Bind(&req)
-	if err!=nil {
+	if err != nil {
 		return
 	}
 
-	resp = srv.List(c,req)
+	resp = srv.List(c, req)
 }
 
 func addArticle(c *gin.Context) {
@@ -54,11 +54,32 @@ func addArticle(c *gin.Context) {
 	}()
 	var req article.Article
 	err = c.Bind(&req)
-	if err!=nil {
+	if err != nil {
 		return
 	}
 	user_id, _ := c.Get("user_id")
 	req.UserId = user_id.(string)
 
-	resp = srv.AddArticle(c,req)
+	resp = srv.AddArticle(c, req)
+}
+
+func updateArticle(c *gin.Context) {
+	resp := response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err != nil {
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK, resp)
+	}()
+
+	var req article.Article
+	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+	user_id, _ := c.Get("user_id")
+	req.UserId = user_id.(string)
+
+	resp = srv.UpdateArticle(c, req)
 }

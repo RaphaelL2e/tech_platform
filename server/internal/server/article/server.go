@@ -8,6 +8,7 @@ import (
 	"tech_platform/server/internal/pkg/response"
 	"tech_platform/server/internal/store"
 	articlestore "tech_platform/server/internal/store/article"
+	userstore "tech_platform/server/internal/store/user"
 )
 
 type Handler struct {
@@ -36,13 +37,33 @@ func (h Handler) List(c *gin.Context, req article.ListArticle) response.ServerRe
 }
 
 func (h Handler) AddArticle(c *gin.Context, req article.Article) response.ServerResponse {
-	s :=store.FromContext(c)
-	a1,err := articlestore.AddArticle(s,req)
+	s := store.FromContext(c)
+	user, err := userstore.GetUserinfo(s, req.UserId)
+	req.Author = user.Name
+	a1, err := articlestore.AddArticle(s, req)
+
+
 	if err != nil {
 		return response.CreateByErrorMessage(err)
 	}
 	return response.CreateBySuccessData(a1)
 
+}
+
+func (h Handler) UpdateArticle(c *gin.Context, req article.Article) response.ServerResponse {
+	s := store.FromContext(c)
+	//判断是否有权限更新
+	result :=articlestore.CheckAuthority(s,req.UserId,req.Id)
+	if !result{
+		return response.CreateByErrorCodeMessage(response.ForbiddenCode)
+	}
+	user, err := userstore.GetUserinfo(s, req.UserId)
+	req.Author = user.Name
+	a1, err := articlestore.UpdateArticle(s, req)
+	if err != nil {
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(a1)
 }
 
 func NewHandler() *Handler {
