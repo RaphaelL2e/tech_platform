@@ -24,6 +24,7 @@ func Articlerouter1(router *gin.RouterGroup){
 		g1.POST("/add",addArticle)
 		g1.PUT("/update",updateArticle)
 		g1.DELETE("/delete",deleteArticle)
+		g1.POST("/review",reviewArticle)
 	}
 }
 

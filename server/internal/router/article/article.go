@@ -1,6 +1,7 @@
 package article
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -104,4 +105,29 @@ func deleteArticle(c *gin.Context){
 	req.UserId = user_id.(string)
 
 	resp = srv.DeleteArticle(c, req)
+}
+
+func reviewArticle(c *gin.Context){
+	resp :=response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err !=nil{
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK,resp)
+	}()
+	var req article.Article
+	err = c.Bind(&req)
+	admin,_ := c.Get("is_admin")
+	isAdmin :=admin.(bool)
+	if !isAdmin{
+		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
+		return
+	}
+	if req.Id ==0{
+		err = fmt.Errorf("bind err")
+		return
+	}
+
+	resp =srv.ReviewArticle(c,req)
 }

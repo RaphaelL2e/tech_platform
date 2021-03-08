@@ -62,7 +62,15 @@ func (d *ArticleHandler) CheckAuthority(uid string, aid int) bool {
 	return suid == uid
 }
 
-func (d *ArticleHandler)DeteleArticle(aid int)(error){
-	err :=d.DB.Model(&article.Article{}).Where("id = ?",aid).Update("status",-1).Error
+func (d *ArticleHandler) DeteleArticle(aid int) error {
+	err := d.DB.Model(&article.Article{}).Where("id = ?", aid).Update("status", -1).Error
 	return err
+}
+
+func (d *ArticleHandler) UpdateArticleStatus(a article.Article) (article.Article, error) {
+	err :=d.DB.Model(&a).Where("id = ?",a.Id).Update("status",a.Status).Scan(&a).Error
+	if err!=nil{
+		return article.Article{},err
+	}
+	return a,nil
 }

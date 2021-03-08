@@ -84,6 +84,15 @@ func (h Handler) DeleteArticle(c *gin.Context, req article.Article) response.Ser
 	return response.CreateBySuccess()
 }
 
+func (h Handler) ReviewArticle(c *gin.Context, req article.Article) response.ServerResponse {
+	s :=store.FromContext(c)
+	a,err := articlestore.ReviewArticle(s,req)
+	if err!=nil{
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(a)
+}
+
 func NewHandler() *Handler {
 	return &Handler{}
 }
