@@ -92,3 +92,12 @@ func (h Handler) DelATT(c *gin.Context, req technology.ATT) response.ServerRespo
 	return response.CreateBySuccess()
 
 }
+
+func (h Handler) ListArticles(c *gin.Context, req technology.ListArticle) response.ServerResponse {
+	tech_store :=store.FromContext(c)
+	list,err :=technologystore.ListArticles(tech_store,req)
+	if err!=nil {
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccessData(list)
+}

@@ -2,6 +2,7 @@ package technology
 
 import (
 	"tech_platform/server/internal/model"
+	"tech_platform/server/internal/model/article"
 	"tech_platform/server/internal/model/technology"
 )
 
@@ -13,6 +14,7 @@ type Store interface {
 	List(t model.ListModel)([]technology.ListTechnology,error)
 	AddATT(att technology.ATT)(error)
 	DelATT(att technology.ATT)(error)
+	ListArticles(la technology.ListArticle)([]article.ListArticleResponse,error)
 }
 
 func Add(store Store,technology technology.Technology)(technology.AddTechnology,error)  {
@@ -41,4 +43,8 @@ func AddATT(store Store,att technology.ATT)(error){
 
 func DelATT(store Store,att technology.ATT)(error){
 	return store.DelATT(att)
+}
+
+func ListArticles(store Store,la technology.ListArticle)([]article.ListArticleResponse,error){
+	return store.ListArticles(la)
 }

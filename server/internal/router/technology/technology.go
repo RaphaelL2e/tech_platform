@@ -128,18 +128,18 @@ func listTechnology(c *gin.Context) {
 }
 
 func addATT(c *gin.Context) {
-	resp :=response.CreateBySuccess()
+	resp := response.CreateBySuccess()
 	var err error
 	defer func() {
-		if err!=nil{
+		if err != nil {
 			resp = response.CreateByErrorMessage(err)
 		}
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 	}()
 
 	var req technology.ATT
 	err = c.Bind(&req)
-	if err!=nil{
+	if err != nil {
 		return
 	}
 	is_admin, _ := c.Get("is_admin")
@@ -148,22 +148,22 @@ func addATT(c *gin.Context) {
 		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
 		return
 	}
-	resp = srv.AddATT(c,req)
+	resp = srv.AddATT(c, req)
 }
 
-func delATT(c *gin.Context){
-	resp :=response.CreateBySuccess()
+func delATT(c *gin.Context) {
+	resp := response.CreateBySuccess()
 	var err error
 	defer func() {
-		if err!=nil{
+		if err != nil {
 			resp = response.CreateByErrorMessage(err)
 		}
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 	}()
 
 	var req technology.ATT
 	err = c.Bind(&req)
-	if err!=nil{
+	if err != nil {
 		return
 	}
 	is_admin, _ := c.Get("is_admin")
@@ -172,5 +172,23 @@ func delATT(c *gin.Context){
 		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
 		return
 	}
-	resp = srv.DelATT(c,req)
+	resp = srv.DelATT(c, req)
+}
+
+func listArticle(c *gin.Context) {
+	resp := response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err != nil {
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK, resp)
+	}()
+
+	var req technology.ListArticle
+	err = c.Bind(&req)
+	if err != nil {
+		return
+	}
+	resp = srv.ListArticles(c, req)
 }

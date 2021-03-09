@@ -38,6 +38,10 @@ type ListTechnology struct {
 }
 
 type ATT struct {
-	Technology_id int `gorm:"technology_id" json:"technology_id"`
-	Article_id int `gorm:"article_id" json:"article_id"`
+	TechnologyId int `gorm:"technology_id" json:"technology_id"`
+	ArticleId int `gorm:"article_id" json:"article_id"`
+}
+
+type ListArticle struct {
+	TechnologyId int `gorm:"technology_id" json:"technology_id"`
 }

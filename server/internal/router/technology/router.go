@@ -14,10 +14,13 @@ func TechnologyRouter0(router *gin.RouterGroup){
 	{
 		g0.GET("/:id",getTechnology)
 		g0.POST("/list",listTechnology)
+		g0.POST("/listArticles",listArticle)
 	}
 
 	srv = technology.NewHandler()
 }
+
+
 
 func TechnologyRouter1(router *gin.RouterGroup){
 	g0 :=router.Group("/technology")

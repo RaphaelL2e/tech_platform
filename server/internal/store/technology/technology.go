@@ -3,6 +3,7 @@ package technology
 import (
 	"gorm.io/gorm"
 	"tech_platform/server/internal/model"
+	"tech_platform/server/internal/model/article"
 	"tech_platform/server/internal/model/technology"
 	"time"
 )
@@ -68,4 +69,12 @@ func (d *TechnologyDataHandler) AddATT(att technology.ATT)(error){
 func (d *TechnologyDataHandler) DelATT(att technology.ATT)(error){
 	err :=d.DB.Table("article_technology").Delete(&att,att).Error
 	return err
+}
+
+func (d *TechnologyDataHandler)ListArticles(la technology.ListArticle)(list []article.ListArticleResponse,err error){
+	err =d.DB.Table("article_technology").Joins("join articles on article_technology.article_id = articles.id").Where("technology_id = ?",la.TechnologyId).Scan(&list).Error
+	if err!=nil{
+		return nil, err
+	}
+	return list,nil
 }
