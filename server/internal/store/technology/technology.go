@@ -61,7 +61,11 @@ func (d *TechnologyDataHandler) List(lm model.ListModel) ([]technology.ListTechn
 }
 
 func (d *TechnologyDataHandler) AddATT(att technology.ATT)(error){
-	d.DB.Table("article_technology").Where("article_id",att.Article_id)
 	err :=d.DB.Table("article_technology").Create(&att).Error
+	return err
+}
+
+func (d *TechnologyDataHandler) DelATT(att technology.ATT)(error){
+	err :=d.DB.Table("article_technology").Delete(&att,att).Error
 	return err
 }

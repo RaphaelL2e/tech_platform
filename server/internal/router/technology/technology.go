@@ -150,3 +150,27 @@ func addATT(c *gin.Context) {
 	}
 	resp = srv.AddATT(c,req)
 }
+
+func delATT(c *gin.Context){
+	resp :=response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err!=nil{
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK,resp)
+	}()
+
+	var req technology.ATT
+	err = c.Bind(&req)
+	if err!=nil{
+		return
+	}
+	is_admin, _ := c.Get("is_admin")
+	admin1 := is_admin.(bool)
+	if !admin1 {
+		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
+		return
+	}
+	resp = srv.DelATT(c,req)
+}

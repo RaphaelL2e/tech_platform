@@ -82,3 +82,13 @@ func (h Handler) AddATT(c *gin.Context, req technology.ATT) response.ServerRespo
 	return response.CreateBySuccess()
 
 }
+
+func (h Handler) DelATT(c *gin.Context, req technology.ATT) response.ServerResponse {
+	tech_store :=store.FromContext(c)
+	err :=technologystore.DelATT(tech_store,req)
+	if err!=nil {
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccess()
+
+}

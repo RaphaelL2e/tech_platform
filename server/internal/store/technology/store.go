@@ -12,6 +12,7 @@ type Store interface {
 	Delete(t technology.DeleteTechnology)(bool,error)
 	List(t model.ListModel)([]technology.ListTechnology,error)
 	AddATT(att technology.ATT)(error)
+	DelATT(att technology.ATT)(error)
 }
 
 func Add(store Store,technology technology.Technology)(technology.AddTechnology,error)  {
@@ -38,3 +39,6 @@ func AddATT(store Store,att technology.ATT)(error){
 	return store.AddATT(att)
 }
 
+func DelATT(store Store,att technology.ATT)(error){
+	return store.DelATT(att)
+}
