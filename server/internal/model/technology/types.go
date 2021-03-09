@@ -36,3 +36,8 @@ type ListTechnology struct {
 	CreateAt time.Time `gorm:"create_at" json:"create_at"`
 	UpdateAt time.Time `gorm:"update_at" json:"update_at"`
 }
+
+type ATT struct {
+	Technology_id int `gorm:"technology_id" json:"technology_id"`
+	Article_id int `gorm:"article_id" json:"article_id"`
+}

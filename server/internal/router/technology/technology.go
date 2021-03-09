@@ -34,16 +34,16 @@ func addTechnology(c *gin.Context) {
 
 	resp = srv.AddTechnology(c, req)
 }
-func getTechnology(c *gin.Context){
+func getTechnology(c *gin.Context) {
 	resp := response.CreateBySuccess()
 	var err error
 	defer func() {
 		if err != nil {
 			resp = response.CreateByErrorMessage(err)
 		}
-		if resp.Code == response.NotFoundCode.Code{
+		if resp.Code == response.NotFoundCode.Code {
 			c.JSON(http.StatusNotFound, resp)
-		}else {
+		} else {
 			c.JSON(http.StatusOK, resp)
 		}
 	}()
@@ -52,17 +52,17 @@ func getTechnology(c *gin.Context){
 	if err != nil {
 		return
 	}
-	resp = srv.GetTechnology(c,id)
+	resp = srv.GetTechnology(c, id)
 }
 
-func updateTechnology(c *gin.Context){
+func updateTechnology(c *gin.Context) {
 	resp := response.CreateBySuccess()
 	var err error
 	defer func() {
-		if err!=nil{
+		if err != nil {
 			resp = response.CreateByErrorMessage(err)
 		}
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 	}()
 	is_admin, _ := c.Get("is_admin")
 	admin1 := is_admin.(bool)
@@ -78,17 +78,17 @@ func updateTechnology(c *gin.Context){
 	user_id, _ := c.Get("user_id")
 	req.UserId = user_id.(string)
 
-	resp = srv.UpdateTechnology(c,req)
+	resp = srv.UpdateTechnology(c, req)
 }
 
-func deleteTechnology(c *gin.Context){
+func deleteTechnology(c *gin.Context) {
 	resp := response.CreateBySuccess()
 	var err error
 	defer func() {
-		if err!=nil{
+		if err != nil {
 			resp = response.CreateByErrorMessage(err)
 		}
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 	}()
 	is_admin, _ := c.Get("is_admin")
 	admin1 := is_admin.(bool)
@@ -102,20 +102,19 @@ func deleteTechnology(c *gin.Context){
 		return
 	}
 
-	resp = srv.DeleteTechnology(c,req)
+	resp = srv.DeleteTechnology(c, req)
 }
 
-
-func listTechnology(c *gin.Context){
+func listTechnology(c *gin.Context) {
 	resp := response.CreateBySuccess()
 	var err error
 	defer func() {
 		if err != nil {
 			resp = response.CreateByErrorMessage(err)
 		}
-		if resp.Code == response.NotFoundCode.Code{
+		if resp.Code == response.NotFoundCode.Code {
 			c.JSON(http.StatusNotFound, resp)
-		}else {
+		} else {
 			c.JSON(http.StatusOK, resp)
 		}
 	}()
@@ -125,5 +124,29 @@ func listTechnology(c *gin.Context){
 	if err != nil {
 		return
 	}
-	resp = srv.ListTechnology(c,req)
+	resp = srv.ListTechnology(c, req)
+}
+
+func addATT(c *gin.Context) {
+	resp :=response.CreateBySuccess()
+	var err error
+	defer func() {
+		if err!=nil{
+			resp = response.CreateByErrorMessage(err)
+		}
+		c.JSON(http.StatusOK,resp)
+	}()
+
+	var req technology.ATT
+	err = c.Bind(&req)
+	if err!=nil{
+		return
+	}
+	is_admin, _ := c.Get("is_admin")
+	admin1 := is_admin.(bool)
+	if !admin1 {
+		resp = response.CreateByErrorCodeMessage(response.ForbiddenCode)
+		return
+	}
+	resp = srv.AddATT(c,req)
 }

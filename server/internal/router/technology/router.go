@@ -25,7 +25,10 @@ func TechnologyRouter1(router *gin.RouterGroup){
 		g0.POST("/add",addTechnology)
 		g0.PUT("/update",updateTechnology)
 		g0.DELETE("/delete",deleteTechnology)
+		g0.POST("/addArticleToTechnology",addATT)
 	}
 }
+
+
 
 

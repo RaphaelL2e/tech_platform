@@ -72,3 +72,13 @@ func (h Handler) ListTechnology(c *gin.Context, req model.ListModel) response.Se
 	}
 	return response.CreateBySuccessData(list)
 }
+
+func (h Handler) AddATT(c *gin.Context, req technology.ATT) response.ServerResponse {
+	tech_store :=store.FromContext(c)
+	err :=technologystore.AddATT(tech_store,req)
+	if err!=nil {
+		return response.CreateByErrorMessage(err)
+	}
+	return response.CreateBySuccess()
+
+}
