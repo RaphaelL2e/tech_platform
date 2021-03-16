@@ -8,7 +8,7 @@ import (
 func main() {
 
 	app := cli.NewApp()
-	app.Name = "user"
+	app.Name = "tech_platform"
 	app.Flags = flags
 	app.Action = server
 

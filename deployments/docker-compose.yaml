@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  nginx:
+    build: "../build/nginx"
+    ports:
+      - "8080:80"
+    depends_on:
+      - "server"
+
+  server:
+    build:
+      context: ".."
+      dockerfile: "build/server/Dockerfile"
+    ports:
+    - "8080"
+    environment:
+      DB_ADDR: "106.15.198.212:3306"
+      DB_NAME: "tech_platform"
+      DB_USER: "root"
+      DB_PWD: "leeyfMysql100%"
+      JWT_LEY: "test"
+
