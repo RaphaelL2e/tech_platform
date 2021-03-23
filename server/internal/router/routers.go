@@ -6,12 +6,14 @@ import (
 	"tech_platform/server/internal/middleware"
 	"tech_platform/server/internal/router/admin"
 	"tech_platform/server/internal/router/article"
+	"tech_platform/server/internal/router/file"
 	"tech_platform/server/internal/router/user"
 	"tech_platform/server/internal/router/technology"
 	"tech_platform/server/pkg/jwtutil"
+	"tech_platform/server/pkg/ossutil"
 )
 
-func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.HandlerFunc) *gin.Engine {
+func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper,ossHelper ossutil.OSSHelper, middlewares ...gin.HandlerFunc) *gin.Engine {
 	gin.DisableConsoleColor()
 
 	// Creates a router without any middleware by default
@@ -41,6 +43,7 @@ func Setup(c *cli.Context,jwtHelper jwtutil.JWTHelper, middlewares ...gin.Handle
 		admin.AdminRouter1(PrivateGroup)
 		technology.TechnologyRouter1(PrivateGroup)
 		article.Articlerouter1(PrivateGroup)
+		file.FileRouter1(PrivateGroup,ossHelper)
 	}
 
 	return router

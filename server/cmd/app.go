@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"tech_platform/server/internal/middleware"
 	"tech_platform/server/internal/router"
+	"tech_platform/server/pkg/ossutil"
 	"time"
 )
 
@@ -52,9 +53,11 @@ var flags = []cli.Flag{
 func server(c *cli.Context) (err error) {
 	store := setupStore(c)
 	jwtHelper := setupJWTHelper(c)
+	ossHelper :=ossutil.NewClient()
 	handler := router.Setup(
 		c,
 		jwtHelper,
+		ossHelper,
 		middleware.Store(store),
 	)
 
