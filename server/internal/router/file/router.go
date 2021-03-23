@@ -18,7 +18,9 @@ func FileRouter1(router *gin.RouterGroup,helper ossutil.OSSHelper){
 	g1 :=router.Group("/file")
 	{
 		g1.POST("/upload",uploadfile)
+		g1.POST("/uploads",uploadfiles)
 
 	}
 	srv = file.NewHandler(helper)
 }
+
