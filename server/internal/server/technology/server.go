@@ -70,7 +70,14 @@ func (h Handler) ListTechnology(c *gin.Context, req model.ListModel) response.Se
 	if err!=nil {
 		return response.CreateByErrorMessage(err)
 	}
-	return response.CreateBySuccessData(list)
+	count,err :=technologystore.Count(tech_store)
+	if err!=nil{
+		count = 10
+	}
+	m :=make(map[string]interface{})
+	m["list"] = list
+	m["count"] = count
+	return response.CreateBySuccessData(m)
 }
 
 func (h Handler) AddATT(c *gin.Context, req technology.ATT) response.ServerResponse {

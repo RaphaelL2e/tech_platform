@@ -15,6 +15,7 @@ type Store interface {
 	AddATT(att technology.ATT)(error)
 	DelATT(att technology.ATT)(error)
 	ListArticles(la technology.ListArticle)([]article.ListArticleResponse,error)
+	Count()(int64,error)
 }
 
 func Add(store Store,technology technology.Technology)(technology.AddTechnology,error)  {
@@ -47,4 +48,8 @@ func DelATT(store Store,att technology.ATT)(error){
 
 func ListArticles(store Store,la technology.ListArticle)([]article.ListArticleResponse,error){
 	return store.ListArticles(la)
+}
+
+func Count(store Store) (int64,error) {
+	return store.Count()
 }

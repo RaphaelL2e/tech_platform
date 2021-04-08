@@ -78,3 +78,12 @@ func (d *TechnologyDataHandler)ListArticles(la technology.ListArticle)(list []ar
 	}
 	return list,nil
 }
+
+func (d *TechnologyDataHandler)Count()(int64,error){
+	count :=int64(0)
+	err :=d.DB.Model(&technology.Technology{}).Count(&count).Error
+	if err!=nil{
+		return 0,err
+	}
+	return count,nil
+}
