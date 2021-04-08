@@ -22,15 +22,16 @@ func (d *ArticleHandler) GetById(id int64) (article.Article, error) {
 
 func (d *ArticleHandler) ListArticle(req article.ListArticle) ([]article.ListArticleResponse,int64, error) {
 	list := []article.ListArticleResponse{}
-	a := new(article.Article)
-	a.Status = req.Status
-	a.UserId = req.UserId
-	err := d.DB.Model(&article.Article{}).Where(a).Limit(req.PageSize).Offset((req.PageNum - 1) * req.PageSize).Find(&list).Error
+
+	err := d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Limit(req.PageSize).Offset((req.PageNum - 1) * req.PageSize).Find(&list).Error
 	if err != nil {
 		return nil,0, err
 	}
 	count :=int64(0)
-	err = d.DB.Model(&article.Article{}).Where(a).Count(&count).Error
+	if req.Status==0{
+
+	}
+	err = d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Count(&count).Error
 	if err != nil {
 		return nil,0, err
 	}
