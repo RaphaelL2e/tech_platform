@@ -59,6 +59,7 @@ func server(c *cli.Context) (err error) {
 		jwtHelper,
 		ossHelper,
 		middleware.Store(store),
+		middleware.Cors(),
 	)
 
 	srv := &http.Server{
