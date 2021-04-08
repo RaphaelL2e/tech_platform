@@ -10,6 +10,7 @@ type Store interface {
 	CheckAuthority(uid string,aid int)(bool)
 	DeteleArticle(aid int)(error)
 	UpdateArticleStatus(a article.Article)(article.Article,error)
+	ArticleCount()(int64,error)
 }
 
 func GetById(store Store,id int64)(article.Article,error){
@@ -38,4 +39,8 @@ func DeleteArticle(store Store,aid int)error{
 
 func ReviewArticle(store Store,a article.Article)(article.Article,error){
 	return store.UpdateArticleStatus(a)
+}
+
+func Count(store Store)(int64,error){
+	return store.ArticleCount()
 }

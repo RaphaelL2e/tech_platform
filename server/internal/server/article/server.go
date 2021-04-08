@@ -33,7 +33,16 @@ func (h Handler) List(c *gin.Context, req article.ListArticle) response.ServerRe
 	if err != nil {
 		return response.CreateByErrorMessage(err)
 	}
-	return response.CreateBySuccessData(list)
+
+	count,err :=articlestore.Count(s)
+	if err!=nil{
+		count = 10
+	}
+	m :=make(map[string]interface{})
+	m["list"] = list
+	m["count"] = count
+
+	return response.CreateBySuccessData(m)
 }
 
 func (h Handler) AddArticle(c *gin.Context, req article.Article) response.ServerResponse {

@@ -74,3 +74,12 @@ func (d *ArticleHandler) UpdateArticleStatus(a article.Article) (article.Article
 	}
 	return a,nil
 }
+
+func (d *ArticleHandler)ArticleCount()(int64,error){
+	count :=int64(0)
+	err :=d.DB.Model(&article.Article{}).Count(&count).Error
+	if err!=nil{
+		return 0,err
+	}
+	return count,nil
+}
