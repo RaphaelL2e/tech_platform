@@ -28,16 +28,12 @@ func (h Handler) GetArticleById(c *gin.Context, id int64) response.ServerRespons
 
 func (h Handler) List(c *gin.Context, req article.ListArticle) response.ServerResponse {
 	s := store.FromContext(c)
-	list, err := articlestore.ListArticle(s, req)
+	list,count, err := articlestore.ListArticle(s, req)
 
 	if err != nil {
 		return response.CreateByErrorMessage(err)
 	}
 
-	count,err :=articlestore.Count(s)
-	if err!=nil{
-		count = 10
-	}
 	m :=make(map[string]interface{})
 	m["list"] = list
 	m["count"] = count
