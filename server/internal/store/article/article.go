@@ -22,8 +22,9 @@ func (d *ArticleHandler) GetById(id int64) (article.Article, error) {
 
 func (d *ArticleHandler) ListArticle(req article.ListArticle) ([]article.ListArticleResponse,int64, error) {
 	list := []article.ListArticleResponse{}
-
-	err := d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Limit(req.PageSize).Offset((req.PageNum - 1) * req.PageSize).Find(&list).Error
+	a :=new(article.Article)
+	a.UserId = req.UserId
+	err := d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Where(a).Limit(req.PageSize).Offset((req.PageNum - 1) * req.PageSize).Find(&list).Error
 	if err != nil {
 		return nil,0, err
 	}
@@ -31,7 +32,7 @@ func (d *ArticleHandler) ListArticle(req article.ListArticle) ([]article.ListArt
 	if req.Status==0{
 
 	}
-	err = d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Count(&count).Error
+	err = d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Where(a).Count(&count).Error
 	if err != nil {
 		return nil,0, err
 	}
