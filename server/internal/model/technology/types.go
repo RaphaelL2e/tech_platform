@@ -11,6 +11,7 @@ type Technology struct {
 	Image string `gorm:"image" json:"image"`
 	ImageType int `gorm:"image_type" json:"image_type"`
 	Context string `gorm:"context" json:"context"`
+	ContextMd string `gorm:"context_md" json:"context_md"`
 	UserId string `gorm:"user_id" json:"user_id"`
 	CreateAt time.Time `gorm:"create_at" json:"create_at"`
 	UpdateAt time.Time `gorm:"update_at" json:"update_at"`
