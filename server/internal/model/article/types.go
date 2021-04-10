@@ -13,6 +13,7 @@ type Article struct {
 	UserId string `gorm:"user_id" json:"user_id"`
 	Author string `gorm:"author" json:"author" `
 	Context string `gorm:"context" json:"context"`
+	ContextMd string `gorm:"context_md" json:"context_md"`
 	Status int `gorm:"status" json:"status"`
 	CreateAt time.Time `gorm:"create_at" json:"create_at"`
 	UpdateAt time.Time `gorm:"update_at" json:"update_at"`
