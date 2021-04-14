@@ -67,14 +67,19 @@ func (d *UserDataHandler) GetUserinfo(userId string) (user.Userinfo, error) {
 	return *ui, nil
 }
 
-func (d *UserDataHandler) ListUser(lm model.ListModel) ([]user.ListUser, error) {
+func (d *UserDataHandler) ListUser(lm model.ListModel) ([]user.ListUser,int64, error) {
 	index := (lm.PageNum - 1) * lm.PageSize
 	sql := fmt.Sprintf("SELECT a.id, a.username, a.status, a.create_at, a.update_at, u.user_id, u.name, u.avatar, " +
 		"u.introduce FROM users a JOIN userinfos u on a.id = u.user_id LIMIT %v OFFSET %v", lm.PageSize, index)
 	var list []user.ListUser
 	err := d.DB.Raw(sql).Scan(&list).Error
 	if err != nil {
-		return nil, err
+		return nil,0, err
 	}
-	return list, nil
+	count :=int64(0);
+	err =d.DB.Table("users").Count(&count).Error
+	if err != nil {
+		return nil,0, err
+	}
+	return list,count, nil
 }

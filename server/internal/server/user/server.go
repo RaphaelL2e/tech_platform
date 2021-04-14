@@ -81,9 +81,12 @@ func (h *Handler) GetUserinfo(c context.Context, userId string) (user.Userinfo, 
 
 func (h *Handler) ListUser(c context.Context,req model.ListModel) response.ServerResponse {
 	user_store := store.FromContext(c)
-	list,err :=userstore.ListUser(user_store,req)
+	list,count,err :=userstore.ListUser(user_store,req)
 	if err!=nil{
 		return response.CreateByErrorMessage(err)
 	}
-	return response.CreateBySuccessData(list)
+	m :=make(map[string]interface{})
+	m["list"] =list
+	m["count"] = count
+	return response.CreateBySuccessData(m)
 }
