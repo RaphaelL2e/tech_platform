@@ -23,6 +23,7 @@ func AdminRouter1(router *gin.RouterGroup){
 	g1 := router.Group("/admin")
 	{
 		g1.POST("/add",adminAdd)
+		g1.POST("/list",adminList)
 	}
 }
 

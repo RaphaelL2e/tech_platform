@@ -3,6 +3,7 @@ package admin
 import (
 	"context"
 	mymd5 "github.com/leeyf888/go-tools/md5"
+	"tech_platform/server/internal/model"
 	"tech_platform/server/internal/model/admin"
 	"tech_platform/server/internal/model/user"
 	"tech_platform/server/internal/pkg/response"
@@ -57,4 +58,15 @@ func (h Handler) AdminAdd(c context.Context,req admin.Admin) response.ServerResp
  		return response.CreateByError()
 	}
 	return response.CreateBySuccess()
+}
+
+func (h Handler) AdminList(c context.Context,req model.ListModel) response.ServerResponse {
+	list,count,err :=adminstore.AdminList(store.FromContext(c),req)
+	if err!=nil{
+		return response.CreateByError()
+	}
+	m :=make(map[string]interface{})
+	m["list"] = list
+	m["count"] =count
+	return response.CreateBySuccessData(m)
 }
