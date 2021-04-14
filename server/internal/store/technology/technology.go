@@ -72,7 +72,7 @@ func (d *TechnologyDataHandler) DelATT(att technology.ATT)(error){
 }
 
 func (d *TechnologyDataHandler)ListArticles(la technology.ListArticle)(list []article.ListArticleResponse,err error){
-	err =d.DB.Table("article_technology").Joins("join articles on article_technology.article_id = articles.id").Where("technology_id = ?",la.TechnologyId).Scan(&list).Error
+	err =d.DB.Table("article_technology").Joins("join articles on article_technology.article_id = articles.id").Where("technology_id = ?",la.TechnologyId).Order("create_at desc").Scan(&list).Error
 	if err!=nil{
 		return nil, err
 	}

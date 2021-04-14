@@ -24,7 +24,7 @@ func (d *ArticleHandler) ListArticle(req article.ListArticle) ([]article.ListArt
 	list := []article.ListArticleResponse{}
 	a :=new(article.Article)
 	a.UserId = req.UserId
-	err := d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Where(a).Limit(req.PageSize).Offset((req.PageNum - 1) * req.PageSize).Find(&list).Error
+	err := d.DB.Model(&article.Article{}).Where("status = ?",req.Status).Where(a).Limit(req.PageSize).Offset((req.PageNum - 1) * req.PageSize).Order("create_at desc").Find(&list).Error
 	if err != nil {
 		return nil,0, err
 	}
