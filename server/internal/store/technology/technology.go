@@ -54,7 +54,7 @@ func (d *TechnologyDataHandler) Delete(t technology.DeleteTechnology) (bool, err
 
 func (d *TechnologyDataHandler) List(lm model.ListModel) ([]technology.ListTechnology, error) {
 	var list []technology.ListTechnology
-	err :=d.DB.Model(&technology.Technology{}).Limit(lm.PageSize).Offset((lm.PageNum-1)*lm.PageSize).Scan(&list).Error
+	err :=d.DB.Model(&technology.Technology{}).Limit(lm.PageSize).Offset((lm.PageNum-1)*lm.PageSize).Order("create_at desc").Scan(&list).Error
 	if err!=nil{
 		return nil, err
 	}
